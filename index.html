@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Sampling Plan - Kelompok 3</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --ocean-dark: #001B3A;
+            --ocean-med: #005B96;
+            --ocean-light: #B3CDE0;
+            --coral-accent: #FF6B6B;
+            --gold-accent: #D4AF37;
+            --text-light: #F8F9FA;
+            --white: #FFFFFF;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--ocean-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Slide Container */
+        .presentation-wrapper {
+            width: 100vw;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+
+        section {
+            width: 100vw;
+            height: 100vh;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 80px;
+            overflow: hidden;
+        }
+
+        /* Background Water Effect */
+        .bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0,27,58,0.85) 0%, rgba(0,91,150,0.5) 100%);
+            z-index: -1;
+        }
+
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0.25;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .accent-bar {
+            width: 60px;
+            height: 4px;
+            background: var(--gold-accent);
+            margin: 15px 0;
+        }
+
+        /* Elements */
+        .content-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            max-width: 1100px;
+            width: 100%;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        /* Theory Slide Specifics */
+        .theory-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .theory-item {
+            background: rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border-top: 3px solid var(--gold-accent);
+        }
+
+        .theory-item i {
+            font-size: 1.5rem;
+            color: var(--gold-accent);
+            margin-bottom: 15px;
+        }
+
+        .theory-item p {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* Bibliography Specifics */
+        .bib-list {
+            margin-top: 20px;
+            font-size: 0.85rem;
+        }
+
+        .bib-entry {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .bib-entry::before {
+            content: "\f02d";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--gold-accent);
+        }
+
+        /* Icon Grid */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .icon-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+
+        .icon-item:hover {
+            background: var(--ocean-med);
+            transform: translateY(-5px);
+        }
+
+        .icon-item i {
+            font-size: 2.2rem;
+            color: var(--gold-accent);
+            margin-bottom: 12px;
+        }
+
+        /* Step List */
+        .step-list {
+            list-style: none;
+            counter-reset: my-counter;
+        }
+
+        .step-list li {
+            counter-increment: my-counter;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .step-list li::before {
+            content: counter(my-counter);
+            font-weight: 800;
+            color: var(--gold-accent);
+            background: var(--ocean-dark);
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-card {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        /* Navigation Help */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            opacity: 0.5;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            z-index: 100;
+        }
+
+        .scroll-indicator i {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-5px);}
+            60% {transform: translateY(-3px);}
+        }
+    </style>
+</head>
+<body>
+
+<div class="scroll-indicator">
+    <span>Gulir untuk Navigasi</span>
+    <i class="fa-solid fa-chevron-down"></i>
+</div>
+
+<div class="presentation-wrapper">
+    
+    <!-- SLIDE 1: JUDUL -->
+    <section id="slide1">
+        <img class="bg-image" src="https://images.unsplash.com/photo-1551033406-611cf9a28f67?auto=format&fit=crop&q=80&w=1600" alt="Latar Belakang Lab Ikan">
+        <div class="bg-overlay"></div>
+        <div class="content-card" style="text-align: center; border: none; background: transparent;">
+            <p style="color: var(--gold-accent); font-weight: 600; letter-spacing: 4px; margin-bottom: 10px;">KELOMPOK 3</p>
+            <h1 style="font-size: 3.5rem; margin: 10px 0; line-height: 1.2;">Multiple Sampling Plan</h1>
+            <p style="font-size: 1.1rem; opacity: 0.8; margin-bottom: 30px;">Rekayasa Mutu dan Keamanan Produk Perikanan dan Kelautan</p>
+            <div class="accent-bar" style="margin: 0 auto 30px;"></div>
+            <p style="font-weight: 600;">Dosen Pengampu: Ibu Ulfah Amalia, S.Pi., M.Si., Ph.D.</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 2: ANGGOTA -->
+    <section id="slide2">
+        <img class="bg-image" src="https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?auto=format&fit=crop&q=80&w=1600" alt="Latar Belakang Jaring">
+        <div class="bg-overlay"></div>
+        <div class="content-card">
+            <h2><i class="fa-solid fa-users-gear" style="color: var(--gold-accent);"></i> Tim Penyusun</h2>
+            <div class="accent-bar"></div>
+            <div class="icon-grid">
+                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
+                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Zaki Muhammad Razan</span>
+                </div>
+                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
+                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Muhamad Falah</span>
+                </div>
+                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
+                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Mumtaz Alkafi Saba</span>
+                </div>
+                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
+                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Ulin Nuha</span>
+                </div>
+                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
+                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Aufan Ashfa Syahata</span>
+                </div>
+                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
+                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Hisyam Ismail</span>
+                </div>
+                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
+                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Muhammad Al Ghaniy</span>
+                </div>
+                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
+                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Akbar Nur Tsani</span>
+                </div>
+                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
+                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Dicky Prabaswara</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 3: DASAR TEORI -->
+    <section id="slide_theory">
+        <div class="bg-overlay"></div>
+        <div class="content-card">
+            <h2><i class="fa-solid fa-book-open" style="color: var(--gold-accent);"></i> Dasar Teori & Literatur</h2>
+            <div class="accent-bar"></div>
+            <div class="theory-grid">
+                <div class="theory-item">
+                    <i class="fa-solid fa-microscope"></i>
+                    <h4>Urgensi Pengujian</h4>
+                    <p>Pengujian mikrobiologi bersifat <b>destruktif</b> dan berbiaya tinggi, sehingga inspeksi 100% tidak mungkin dilakukan (Santos-Fernández et al., 2014).</p>
+                </div>
+                <div class="theory-item">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h4>Fitness for Use</h4>
+                    <p>Metode sampling digunakan untuk menilai apakah suatu lot produk layak digunakan guna memberikan perlindungan maksimal bagi konsumen.</p>
+                </div>
+                <div class="theory-item">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <h4>Keberlanjutan Mutu</h4>
+                    <p>Sampling bertahap mengurangi pemborosan sumber daya selama proses inspeksi, mendukung manajemen kualitas yang berkelanjutan (Wang et al., 2023).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 4: PENGERTIAN -->
+    <section id="slide3">
+        <div class="bg-overlay"></div>
+        <div class="content-card">
+            <div style="display: flex; gap: 40px; align-items: center;">
+                <div style="flex: 1.5;">
+                    <h2><i class="fa-solid fa-clipboard-list" style="color: var(--gold-accent);"></i> Definisi</h2>
+                    <div class="accent-bar"></div>
+                    <p style="font-size: 1.15rem; line-height: 1.7;"><b>Multiple Sampling Plan</b> adalah rencana sampling bertahap (<i>stage-independent</i>) yang memungkinkan pengambilan keputusan dengan ukuran sampel rata-rata terkecil.</p>
+                    <p style="margin-top: 15px; opacity: 0.8; font-size: 0.95rem;">Lembaga internasional seperti <b>Codex Alimentarius</b> dan <b>ICMSF</b> merekomendasikan metode ini untuk penilaian kepatuhan regulasi keamanan pangan (Institute of Medicine, 1991).</p>
+                </div>
+                <div style="flex: 1; text-align: center;">
+                    <i class="fa-solid fa-vials" style="font-size: 7rem; color: var(--ocean-light); opacity: 0.4;"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 5: CARA KERJA -->
+    <section id="slide4">
+        <div class="bg-overlay"></div>
+        <div class="content-card">
+            <h2><i class="fa-solid fa-diagram-project" style="color: var(--gold-accent);"></i> Prosedur Kerja</h2>
+            <div class="accent-bar"></div>
+            <ul class="step-list">
+                <li>
+                    <div><strong>Tahap 1:</strong> Analisis lot awal. Jika kualitas memenuhi standar keamanan pangan, produk langsung <b>Diterima</b>.</div>
+                </li>
+                <li>
+                    <div><strong>Penyaringan:</strong> Jika ditemukan kontaminasi berat (di atas batas kritis), produk langsung <b>Ditolak</b>.</div>
+                </li>
+                <li>
+                    <div><strong>Iterasi:</strong> Jika hasil belum konklusif, dilakukan pengambilan sampel tambahan tanpa mengurangi perlindungan risiko.</div>
+                </li>
+                <li>
+                    <div><strong>Finalisasi:</strong> Akumulasi data statistik digunakan untuk keputusan akhir guna menjamin keamanan konsumen.</div>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SLIDE 6: PLUS MINUS -->
+    <section id="slide5">
+        <div class="bg-overlay"></div>
+        <div class="content-card">
+            <h2>Evaluasi Metode</h2>
+            <div class="accent-bar"></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
+                <div style="background: rgba(76, 175, 80, 0.1); padding: 25px; border-radius: 15px; border-left: 5px solid #4CAF50;">
+                    <h4 style="color: #81C784;"><i class="fa-solid fa-plus-circle"></i> Kelebihan</h4>
+                    <p style="margin-top: 10px; font-size: 0.9rem;">• Ukuran sampel rata-rata lebih kecil dibandingkan rencana satu tahap.<br>• Efisiensi biaya laboratorium dan pengurangan pemborosan produk.</p>
+                </div>
+                <div style="background: rgba(244, 67, 54, 0.1); padding: 25px; border-radius: 15px; border-left: 5px solid #F44336;">
+                    <h4 style="color: #E57373;"><i class="fa-solid fa-minus-circle"></i> Kekurangan</h4>
+                    <p style="margin-top: 10px; font-size: 0.9rem;">• Manajemen administrasi inspeksi yang lebih kompleks.<br>• Membutuhkan kesiapan pengujian berulang di fasilitas pengolah.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 7: APLIKASI PERIKANAN -->
+    <section id="slide6">
+        <img class="bg-image" src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=1600" alt="Ikan di Lab">
+        <div class="bg-overlay"></div>
+        <div class="content-card">
+            <h2>Implementasi Sektor Perikanan</h2>
+            <div class="accent-bar"></div>
+            <div class="icon-grid">
+                <div class="icon-item">
+                    <i class="fa-solid fa-eye"></i>
+                    <h4>Sensorik</h4>
+                    <p style="font-size: 0.75rem; margin-top: 5px;">Pengecekan karakteristik fisik objektif (mata, tekstur).</p>
+                </div>
+                <div class="icon-item">
+                    <i class="fa-solid fa-microscope"></i>
+                    <h4>Mikrobiologi</h4>
+                    <p style="font-size: 0.75rem; margin-top: 5px;">Deteksi patogen (Salmonella, Vibrio) sesuai standar ICMSF.</p>
+                </div>
+                <div class="icon-item">
+                    <i class="fa-solid fa-flask"></i>
+                    <h4>Kimiawi</h4>
+                    <p style="font-size: 0.75rem; margin-top: 5px;">Analisis Histamin dan cemaran logam berat.</p>
+                </div>
+            </div>
+            <p style="margin-top: 25px; font-style: italic; opacity: 0.8; text-align: center; font-size: 0.9rem;">"Metode ini sangat krusial untuk memastikan kepatuhan terhadap regulasi keamanan hasil laut global."</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 8: REFERENSI -->
+    <section id="slide_bib">
+        <div class="bg-overlay"></div>
+        <div class="content-card">
+            <h2><i class="fa-solid fa-scroll" style="color: var(--gold-accent);"></i> Referensi Literatur</h2>
+            <div class="accent-bar"></div>
+            <div class="bib-list">
+                <div class="bib-entry">
+                    Institute of Medicine. (1991). <i>Seafood Safety</i>. Washington, DC: National Academy Press.
+                </div>
+                <div class="bib-entry">
+                    Santos-Fernández, E., Govindaraju, K., & Jones, G. (2014). A new variables acceptance sampling plan for food safety. <i>Food Control</i>, 44, 249-257.
+                </div>
+                <div class="bib-entry">
+                    Wang, M., Yang, F., Zhang, B., & Chen, Z. (2023). Sustainable Quality Management Based on Metrological Sampling Scheme Design: A Case Study of Food Processor. <i>Sustainability</i>, 15(6), 5283.
+                </div>
+                <div class="bib-entry" style="opacity: 0.8; font-style: italic;">
+                    Standard Guidelines: Codex Alimentarius Commission (CAC) & International Commission on Microbiological Specifications for Foods (ICMSF).
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 9: KESIMPULAN -->
+    <section id="slide9">
+        <div class="bg-overlay" style="background: radial-gradient(circle at center, var(--ocean-med) 0%, var(--ocean-dark) 100%);"></div>
+        <div class="content-card" style="text-align: center;">
+            <i class="fa-solid fa-anchor" style="font-size: 3rem; color: var(--gold-accent); margin-bottom: 20px;"></i>
+            <h2>Kesimpulan</h2>
+            <div class="accent-bar" style="margin: 15px auto;"></div>
+            <p style="font-size: 1.2rem; max-width: 850px; margin: 0 auto; line-height: 1.6;">Multiple Sampling Plan menyeimbangkan <b>efisiensi operasional</b> dengan <b>ketatnya standar keamanan pangan</b>. Melalui pengurangan ukuran sampel rata-rata tanpa mengurangi proteksi risiko, metode ini menjamin keberlanjutan mutu produk perikanan.</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 10: PENUTUP -->
+    <section id="slide10">
+        <div class="bg-overlay"></div>
+        <div class="content-card" style="text-align: center; border: none; background: transparent;">
+            <h1 style="color: var(--gold-accent); font-size: 3rem;">Terima Kasih</h1>
+            <p style="font-size: 1.1rem; margin: 15px 0;">Sesi Tanya Jawab & Diskusi Dibuka</p>
+            <div class="accent-bar" style="margin: 0 auto;"></div>
+            <p style="opacity: 0.7; margin-top: 35px; font-size: 0.85rem;">Wassalamu’alaikum warahmatullahi wabarakatuh</p>
+        </div>
+    </section>
+
+</div>
+
+</body>
+</html>
