@@ -1,475 +1,377 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multiple Sampling Plan - Kelompok 3</title>
+    <title>Inovasi Produk Terasi | UNDIP Jepara</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        terasi: {
+                            50: '#fdf8f6',
+                            100: '#f2e8e5',
+                            200: '#eaddd7',
+                            300: '#e0cec5',
+                            400: '#d2b9ac',
+                            500: '#b88b78',
+                            600: '#9c6b53',
+                            700: '#83533c',
+                            800: '#69412f',
+                            900: '#422518',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --ocean-dark: #001B3A;
-            --ocean-med: #005B96;
-            --ocean-light: #B3CDE0;
-            --coral-accent: #FF6B6B;
-            --gold-accent: #D4AF37;
-            --text-light: #F8F9FA;
-            --white: #FFFFFF;
-            --glass: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.15);
+        /* Custom Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
-
-        body {
-            font-family: 'Open Sans', sans-serif;
-            background-color: var(--ocean-dark);
-            color: var(--text-light);
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
-
-        /* Slide Container */
-        .presentation-wrapper {
-            width: 100vw;
-            height: 100vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-        }
-
-        section {
-            width: 100vw;
-            height: 100vh;
-            scroll-snap-align: start;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 60px 80px;
-            overflow: hidden;
-        }
-
-        /* Background Water Effect */
-        .bg-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, rgba(0,27,58,0.85) 0%, rgba(0,91,150,0.5) 100%);
-            z-index: -1;
-        }
-
-        .bg-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -2;
-            opacity: 0.25;
-        }
-
-        /* Typography */
-        h1, h2, h3, h4 {
-            font-family: 'Montserrat', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .accent-bar {
-            width: 60px;
-            height: 4px;
-            background: var(--gold-accent);
-            margin: 15px 0;
-        }
-
-        /* Elements */
-        .content-card {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            max-width: 1100px;
-            width: 100%;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            position: relative;
-        }
-
-        /* Theory Slide Specifics */
-        .theory-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 25px;
-            margin-top: 20px;
-        }
-
-        .theory-item {
-            background: rgba(255,255,255,0.05);
-            padding: 25px;
-            border-radius: 15px;
-            border-top: 3px solid var(--gold-accent);
-        }
-
-        .theory-item i {
-            font-size: 1.5rem;
-            color: var(--gold-accent);
-            margin-bottom: 15px;
-        }
-
-        .theory-item p {
-            font-size: 0.85rem;
-            line-height: 1.6;
-            opacity: 0.9;
-        }
-
-        /* Bibliography Specifics */
-        .bib-list {
-            margin-top: 20px;
-            font-size: 0.85rem;
-        }
-
-        .bib-entry {
-            margin-bottom: 15px;
-            padding-left: 30px;
-            position: relative;
-            line-height: 1.5;
-        }
-
-        .bib-entry::before {
-            content: "\f02d";
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
-            position: absolute;
-            left: 0;
-            color: var(--gold-accent);
-        }
-
-        /* Icon Grid */
-        .icon-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .icon-item {
-            text-align: center;
-            padding: 20px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 15px;
-            transition: 0.3s;
-        }
-
-        .icon-item:hover {
-            background: var(--ocean-med);
-            transform: translateY(-5px);
-        }
-
-        .icon-item i {
-            font-size: 2.2rem;
-            color: var(--gold-accent);
-            margin-bottom: 12px;
-        }
-
-        /* Step List */
-        .step-list {
-            list-style: none;
-            counter-reset: my-counter;
-        }
-
-        .step-list li {
-            counter-increment: my-counter;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .step-list li::before {
-            content: counter(my-counter);
-            font-weight: 800;
-            color: var(--gold-accent);
-            background: var(--ocean-dark);
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            flex-shrink: 0;
-            font-size: 0.9rem;
-        }
-
-        /* Animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .content-card {
-            animation: fadeIn 0.8s ease-out forwards;
-        }
-
-        /* Navigation Help */
-        .scroll-indicator {
-            position: fixed;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.7rem;
-            opacity: 0.5;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            z-index: 100;
-        }
-
-        .scroll-indicator i {
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-5px);}
-            60% {transform: translateY(-3px);}
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        
+        .hero-pattern {
+            background-color: #422518;
+            background-image: linear-gradient(rgba(66, 37, 24, 0.85), rgba(66, 37, 24, 0.95)), url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
     </style>
 </head>
-<body>
+<body class="font-sans text-gray-800 bg-terasi-50 antialiased selection:bg-terasi-500 selection:text-white">
 
-<div class="scroll-indicator">
-    <span>Gulir untuk Navigasi</span>
-    <i class="fa-solid fa-chevron-down"></i>
-</div>
-
-<div class="presentation-wrapper">
-    
-    <!-- SLIDE 1: JUDUL -->
-    <section id="slide1">
-        <img class="bg-image" src="https://images.unsplash.com/photo-1551033406-611cf9a28f67?auto=format&fit=crop&q=80&w=1600" alt="Latar Belakang Lab Ikan">
-        <div class="bg-overlay"></div>
-        <div class="content-card" style="text-align: center; border: none; background: transparent;">
-            <p style="color: var(--gold-accent); font-weight: 600; letter-spacing: 4px; margin-bottom: 10px;">KELOMPOK 3</p>
-            <h1 style="font-size: 3.5rem; margin: 10px 0; line-height: 1.2;">Multiple Sampling Plan</h1>
-            <p style="font-size: 1.1rem; opacity: 0.8; margin-bottom: 30px;">Rekayasa Mutu dan Keamanan Produk Perikanan dan Kelautan</p>
-            <div class="accent-bar" style="margin: 0 auto 30px;"></div>
-            <p style="font-weight: 600;">Dosen Pengampu: Ibu Ulfah Amalia, S.Pi., M.Si., Ph.D.</p>
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md shadow-sm" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center gap-2">
+                    <i class="fa-solid fa-shrimp text-terasi-600 text-2xl"></i>
+                    <span class="font-serif font-bold text-xl text-terasi-900">TerasiKu</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#pendahuluan" class="text-gray-600 hover:text-terasi-600 font-medium transition-colors">Pendahuluan</a>
+                    <a href="#proses" class="text-gray-600 hover:text-terasi-600 font-medium transition-colors">Proses</a>
+                    <a href="#inovasi" class="text-gray-600 hover:text-terasi-600 font-medium transition-colors">Inovasi</a>
+                    <a href="#tim" class="text-gray-600 hover:text-terasi-600 font-medium transition-colors">Tim</a>
+                </div>
+            </div>
         </div>
-    </section>
+    </nav>
 
-    <!-- SLIDE 2: ANGGOTA -->
-    <section id="slide2">
-        <img class="bg-image" src="https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?auto=format&fit=crop&q=80&w=1600" alt="Latar Belakang Jaring">
-        <div class="bg-overlay"></div>
-        <div class="content-card">
-            <h2><i class="fa-solid fa-users-gear" style="color: var(--gold-accent);"></i> Tim Penyusun</h2>
-            <div class="accent-bar"></div>
-            <div class="icon-grid">
-                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
-                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Zaki Muhammad Razan</span>
+    <!-- Hero Section -->
+    <header class="hero-pattern min-h-screen flex items-center justify-center pt-16 relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-terasi-900/90"></div>
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto reveal">
+            <span class="inline-block py-1 px-3 rounded-full bg-terasi-500/20 text-terasi-200 border border-terasi-500/30 text-sm font-semibold tracking-wider mb-4">
+                INOVASI PENGEMBANGAN PRODUK PERIKANAN & KELAUTAN
+            </span>
+            <h1 class="text-5xl md:text-7xl font-serif font-bold text-white mb-6 leading-tight">
+                Revolusi Produk Fermentasi <span class="text-terasi-400">Terasi</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 mb-8 font-light max-w-2xl mx-auto">
+                Meningkatkan cita rasa, nilai ekonomi, dan daya saing mahakarya kearifan lokal pesisir Indonesia melalui inovasi modern.
+            </p>
+            <a href="#pendahuluan" class="inline-flex items-center gap-2 bg-terasi-600 hover:bg-terasi-500 text-white px-8 py-3 rounded-full font-medium transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-terasi-600/30">
+                Jelajahi Inovasi <i class="fa-solid fa-arrow-down"></i>
+            </a>
+        </div>
+        
+        <!-- Animated Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fa-solid fa-chevron-down text-white/50 text-2xl"></i>
+        </div>
+    </header>
+
+    <!-- Latar Belakang & Pengertian -->
+    <section id="pendahuluan" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl group">
+                        <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bumbu Tradisional" class="w-full h-[500px] object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-terasi-900/80 to-transparent flex items-end p-8">
+                            <h3 class="text-white font-serif text-2xl font-bold">Kearifan Lokal Pesisir</h3>
+                        </div>
+                    </div>
                 </div>
-                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
-                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Muhamad Falah</span>
-                </div>
-                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
-                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Mumtaz Alkafi Saba</span>
-                </div>
-                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
-                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Ulin Nuha</span>
-                </div>
-                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
-                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Aufan Ashfa Syahata</span>
-                </div>
-                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
-                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Hisyam Ismail</span>
-                </div>
-                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
-                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Muhammad Al Ghaniy</span>
-                </div>
-                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
-                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Akbar Nur Tsani</span>
-                </div>
-                <div class="icon-item" style="text-align: left; display: flex; align-items: center; gap: 15px; padding: 10px;">
-                    <i class="fa-solid fa-fish-fins" style="font-size: 1rem; margin:0;"></i> <span style="font-size: 0.9rem;">Dicky Prabaswara</span>
+                
+                <div class="space-y-8 reveal delay-100">
+                    <div>
+                        <h2 class="text-sm font-bold text-terasi-600 tracking-widest uppercase mb-2">Pendahuluan</h2>
+                        <h3 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">Lebih dari Sekadar Pengawetan</h3>
+                        <p class="text-gray-600 leading-relaxed text-justify">
+                            Produk fermentasi perikanan merupakan bentuk kearifan lokal masyarakat pesisir Indonesia. Proses ini tidak hanya berfungsi sebagai metode pengawetan, tetapi juga <strong>meningkatkan cita rasa, aroma, serta nilai ekonomi</strong> dari bahan baku. Industri ini, meski tradisional, menjadi urat nadi perekonomian masyarakat lokal.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-terasi-50 p-6 rounded-2xl border border-terasi-100 border-l-4 border-l-terasi-600">
+                        <h4 class="text-xl font-bold text-terasi-900 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-shrimp text-terasi-600"></i> Apa itu Terasi?
+                        </h4>
+                        <p class="text-gray-700 text-sm leading-relaxed text-justify">
+                            Terasi adalah olahan hasil perikanan yang dibuat melalui fermentasi <strong>udang kecil (rebon)</strong> dengan penambahan garam. Mikroorganisme menguraikan senyawa kompleks menjadi lebih sederhana, menghasilkan aroma dan rasa khas. Umumnya berbentuk padat, cokelat kehitaman, dengan bau yang tajam.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SLIDE 3: DASAR TEORI -->
-    <section id="slide_theory">
-        <div class="bg-overlay"></div>
-        <div class="content-card">
-            <h2><i class="fa-solid fa-book-open" style="color: var(--gold-accent);"></i> Dasar Teori & Literatur</h2>
-            <div class="accent-bar"></div>
-            <div class="theory-grid">
-                <div class="theory-item">
-                    <i class="fa-solid fa-microscope"></i>
-                    <h4>Urgensi Pengujian</h4>
-                    <p>Pengujian mikrobiologi bersifat <b>destruktif</b> dan berbiaya tinggi, sehingga inspeksi 100% tidak mungkin dilakukan (Santos-Fernández et al., 2014).</p>
+    <!-- Proses Pembuatan -->
+    <section id="proses" class="py-20 bg-terasi-900 text-white relative overflow-hidden">
+        <!-- Abstract Background -->
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-terasi-700/30 blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-terasi-800/40 blur-3xl"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-sm font-bold text-terasi-300 tracking-widest uppercase mb-2">Tahapan Produksi</h2>
+                <h3 class="text-3xl md:text-4xl font-serif font-bold mb-4">Proses Pembuatan Tradisional</h3>
+                <p class="text-terasi-200 max-w-2xl mx-auto">Transformasi biokimia dari udang rebon segar menjadi bumbu penyedap beraroma khas.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Step 1 -->
+                <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/10 relative overflow-hidden group hover:bg-white/20 transition-colors reveal delay-100">
+                    <div class="text-5xl font-black text-white/10 absolute -right-2 -bottom-2 group-hover:scale-110 transition-transform">01</div>
+                    <div class="w-12 h-12 bg-terasi-500 rounded-full flex items-center justify-center mb-6 text-white text-xl">
+                        <i class="fa-solid fa-check-double"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3">Pemilihan Bahan</h4>
+                    <p class="text-terasi-100 text-sm leading-relaxed">
+                        Diawali dengan seleksi bahan baku udang rebon yang masih segar untuk memastikan kualitas fermentasi.
+                    </p>
                 </div>
-                <div class="theory-item">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <h4>Fitness for Use</h4>
-                    <p>Metode sampling digunakan untuk menilai apakah suatu lot produk layak digunakan guna memberikan perlindungan maksimal bagi konsumen.</p>
+
+                <!-- Step 2 -->
+                <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/10 relative overflow-hidden group hover:bg-white/20 transition-colors reveal delay-200">
+                    <div class="text-5xl font-black text-white/10 absolute -right-2 -bottom-2 group-hover:scale-110 transition-transform">02</div>
+                    <div class="w-12 h-12 bg-terasi-500 rounded-full flex items-center justify-center mb-6 text-white text-xl">
+                        <i class="fa-solid fa-sun"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3">Penggaraman & Penjemuran</h4>
+                    <p class="text-terasi-100 text-sm leading-relaxed">
+                        Dicampur garam (pengawet & pengontrol mikroba), lalu dijemur di bawah sinar matahari untuk mengurangi kadar air.
+                    </p>
                 </div>
-                <div class="theory-item">
-                    <i class="fa-solid fa-gauge-high"></i>
-                    <h4>Keberlanjutan Mutu</h4>
-                    <p>Sampling bertahap mengurangi pemborosan sumber daya selama proses inspeksi, mendukung manajemen kualitas yang berkelanjutan (Wang et al., 2023).</p>
+
+                <!-- Step 3 -->
+                <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/10 relative overflow-hidden group hover:bg-white/20 transition-colors reveal delay-300">
+                    <div class="text-5xl font-black text-white/10 absolute -right-2 -bottom-2 group-hover:scale-110 transition-transform">03</div>
+                    <div class="w-12 h-12 bg-terasi-500 rounded-full flex items-center justify-center mb-6 text-white text-xl">
+                        <i class="fa-solid fa-flask"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3">Fermentasi</h4>
+                    <p class="text-terasi-100 text-sm leading-relaxed">
+                        Berlangsung beberapa hari hingga minggu. Terjadi perubahan biokimia yang menghasilkan aroma dan rasa khas.
+                    </p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/10 relative overflow-hidden group hover:bg-white/20 transition-colors reveal delay-300">
+                    <div class="text-5xl font-black text-white/10 absolute -right-2 -bottom-2 group-hover:scale-110 transition-transform">04</div>
+                    <div class="w-12 h-12 bg-terasi-500 rounded-full flex items-center justify-center mb-6 text-white text-xl">
+                        <i class="fa-solid fa-mortar-pestle"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3">Penggilingan & Pencetakan</h4>
+                    <p class="text-terasi-100 text-sm leading-relaxed">
+                        Adonan hasil fermentasi digiling hingga halus, dicetak dalam bentuk padat, dan dikeringkan kembali sebelum dipasarkan.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SLIDE 4: PENGERTIAN -->
-    <section id="slide3">
-        <div class="bg-overlay"></div>
-        <div class="content-card">
-            <div style="display: flex; gap: 40px; align-items: center;">
-                <div style="flex: 1.5;">
-                    <h2><i class="fa-solid fa-clipboard-list" style="color: var(--gold-accent);"></i> Definisi</h2>
-                    <div class="accent-bar"></div>
-                    <p style="font-size: 1.15rem; line-height: 1.7;"><b>Multiple Sampling Plan</b> adalah rencana sampling bertahap (<i>stage-independent</i>) yang memungkinkan pengambilan keputusan dengan ukuran sampel rata-rata terkecil.</p>
-                    <p style="margin-top: 15px; opacity: 0.8; font-size: 0.95rem;">Lembaga internasional seperti <b>Codex Alimentarius</b> dan <b>ICMSF</b> merekomendasikan metode ini untuk penilaian kepatuhan regulasi keamanan pangan (Institute of Medicine, 1991).</p>
+    <!-- Upaya Pengembangan (Inovasi) -->
+    <section id="inovasi" class="py-20 bg-terasi-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-sm font-bold text-terasi-600 tracking-widest uppercase mb-2">Inovasi Masa Depan</h2>
+                <h3 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">Upaya Pengembangan Produk</h3>
+                <p class="text-gray-600 max-w-2xl mx-auto">Strategi untuk meningkatkan kualitas, daya saing, dan memperluas jangkauan pasar terasi tanpa menghilangkan nilai tradisionalnya.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-2xl p-8 shadow-xl shadow-terasi-900/5 hover:-translate-y-2 transition-transform duration-300 reveal delay-100">
+                    <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-sliders text-terasi-600 text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3">Standarisasi Produksi</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Penerapan standar proses yang ketat, meliputi pengaturan kadar garam, waktu fermentasi, dan kondisi lingkungan untuk menjamin kualitas produk yang terjaga dan konsisten.
+                    </p>
                 </div>
-                <div style="flex: 1; text-align: center;">
-                    <i class="fa-solid fa-vials" style="font-size: 7rem; color: var(--ocean-light); opacity: 0.4;"></i>
+
+                <!-- Card 2 -->
+                <div class="bg-white rounded-2xl p-8 shadow-xl shadow-terasi-900/5 hover:-translate-y-2 transition-transform duration-300 reveal delay-200">
+                    <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-shield-virus text-terasi-600 text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3">Peningkatan Higienitas</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Edukasi sanitasi dan keamanan pangan. Menggunakan alat bersih, tempat produksi layak, serta perlindungan ekstra saat penjemuran guna meminimalisir risiko kontaminasi.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-terasi-600 rounded-2xl p-8 shadow-xl shadow-terasi-900/20 hover:-translate-y-2 transition-transform duration-300 reveal delay-300 text-white relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 text-terasi-500 opacity-30 text-8xl">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center mb-6 relative z-10">
+                        <i class="fa-solid fa-lightbulb text-white text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3 relative z-10">Diversifikasi & Pengemasan</h4>
+                    <p class="text-terasi-100 text-sm leading-relaxed relative z-10">
+                        Desain kemasan modern yang informatif. Inovasi diversifikasi seperti <strong>Terasi Bubuk</strong> atau kemasan praktis (sachet) untuk menjangkau segmentasi pasar urban yang lebih luas.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SLIDE 5: CARA KERJA -->
-    <section id="slide4">
-        <div class="bg-overlay"></div>
-        <div class="content-card">
-            <h2><i class="fa-solid fa-diagram-project" style="color: var(--gold-accent);"></i> Prosedur Kerja</h2>
-            <div class="accent-bar"></div>
-            <ul class="step-list">
-                <li>
-                    <div><strong>Tahap 1:</strong> Analisis lot awal. Jika kualitas memenuhi standar keamanan pangan, produk langsung <b>Diterima</b>.</div>
+    <!-- Kesimpulan -->
+    <section class="py-16 bg-white border-t border-gray-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+            <i class="fa-solid fa-quote-left text-4xl text-terasi-200 mb-6"></i>
+            <h3 class="text-2xl md:text-3xl font-serif font-bold text-gray-900 mb-6">Kesimpulan & Saran</h3>
+            <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                Terasi memiliki nilai budaya dan ekonomi yang tinggi. Meski memiliki cita rasa khas, kendala kualitas, higienitas, dan standarisasi masih sering ditemui.
+            </p>
+            <p class="text-terasi-700 font-medium">
+                "Dibutuhkan upaya nyata melalui penerapan teknologi sederhana, edukasi sanitasi, serta inovasi kemasan agar terasi mampu bersaing di pasar modern tanpa kehilangan identitas tradisionalnya."
+            </p>
+        </div>
+    </section>
+
+    <!-- Tim Penyusun -->
+    <section id="tim" class="py-20 bg-terasi-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-sm font-bold text-terasi-300 tracking-widest uppercase mb-2">Kreator</h2>
+                <h3 class="text-3xl md:text-4xl font-serif font-bold mb-4">Tim Penyusun</h3>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-8">
+                <!-- Member 1 -->
+                <div class="bg-white/5 backdrop-blur-md rounded-2xl p-6 text-center w-full sm:w-80 border border-white/10 hover:bg-white/10 transition-colors reveal delay-100">
+                    <div class="w-20 h-20 bg-terasi-500 rounded-full mx-auto mb-4 flex items-center justify-center text-2xl font-bold">
+                        A
+                    </div>
+                    <h4 class="text-lg font-bold mb-1">Ahmad Rifqi Hidayatullah</h4>
+                    <p class="text-terasi-300 text-sm font-mono bg-black/20 inline-block px-3 py-1 rounded-full">26060224140014</p>
+                </div>
+
+                <!-- Member 2 -->
+                <div class="bg-white/5 backdrop-blur-md rounded-2xl p-6 text-center w-full sm:w-80 border border-white/10 hover:bg-white/10 transition-colors reveal delay-200">
+                    <div class="w-20 h-20 bg-terasi-500 rounded-full mx-auto mb-4 flex items-center justify-center text-2xl font-bold">
+                        Z
+                    </div>
+                    <h4 class="text-lg font-bold mb-1">Zaki Muhammad Razan</h4>
+                    <p class="text-terasi-300 text-sm font-mono bg-black/20 inline-block px-3 py-1 rounded-full">26060224140028</p>
+                </div>
+
+                <!-- Member 3 -->
+                <div class="bg-white/5 backdrop-blur-md rounded-2xl p-6 text-center w-full sm:w-80 border border-white/10 hover:bg-white/10 transition-colors reveal delay-300">
+                    <div class="w-20 h-20 bg-terasi-500 rounded-full mx-auto mb-4 flex items-center justify-center text-2xl font-bold">
+                        A
+                    </div>
+                    <h4 class="text-lg font-bold mb-1">Angga Dwi Cahyo</h4>
+                    <p class="text-terasi-300 text-sm font-mono bg-black/20 inline-block px-3 py-1 rounded-full">260602241400</p>
+                </div>
+            </div>
+
+            <!-- University Info -->
+            <div class="mt-16 text-center reveal border-t border-white/10 pt-10">
+                <img src="image_99b819.png" alt="Logo UNDIP" class="w-24 h-auto mx-auto mb-4 drop-shadow-md">
+                <p class="text-terasi-200 font-medium">Program Studi Teknologi dan Bisnis Perikanan dan Kelautan</p>
+                <p class="text-terasi-300 text-sm">Fakultas Perikanan dan Ilmu Kelautan</p>
+                <p class="text-terasi-300 text-sm">Universitas Diponegoro - Jepara, 2026</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer & Daftar Pustaka -->
+    <footer class="bg-gray-900 text-gray-400 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h4 class="text-white font-bold mb-6 text-lg border-b border-gray-800 pb-2 inline-block">Daftar Pustaka</h4>
+            <ul class="space-y-4 text-sm max-w-4xl">
+                <li class="pl-4 border-l-2 border-terasi-600 hover:text-gray-200 transition-colors">
+                    Firdaus, M., C.A. Intyas dan Y. Yahya. 2021. Peningkatan Kapasitas Produksi Terasi Rebon di Desa Ketapang Kotamadya Probolinggo. <em>Jurnal Ilmiah Pengabdian Kepada Masyarakat</em>. 6(3): 286-290.
                 </li>
-                <li>
-                    <div><strong>Penyaringan:</strong> Jika ditemukan kontaminasi berat (di atas batas kritis), produk langsung <b>Ditolak</b>.</div>
+                <li class="pl-4 border-l-2 border-terasi-600 hover:text-gray-200 transition-colors">
+                    Fuad, S.I., L. Danu dan P. Arzani. 2025. Microbiome Metabolite Sensory Nexus in Shrimp Paste Fermentation. <em>Jurnal Kolaboratif Sains</em>. 8(10): 6620-6629.
                 </li>
-                <li>
-                    <div><strong>Iterasi:</strong> Jika hasil belum konklusif, dilakukan pengambilan sampel tambahan tanpa mengurangi perlindungan risiko.</div>
-                </li>
-                <li>
-                    <div><strong>Finalisasi:</strong> Akumulasi data statistik digunakan untuk keputusan akhir guna menjamin keamanan konsumen.</div>
+                <li class="pl-4 border-l-2 border-terasi-600 hover:text-gray-200 transition-colors">
+                    Zati, R.M., D. Rosalina dan D.A. Ardiyanti. 2019. Faktor-Faktor Penghambat Perkembangan Usaha Terasi di Kawasan Pesisir Kota Langsa. <em>Jurnal Nasional Kewirausahaan</em>. 1(2): 2-9.
                 </li>
             </ul>
-        </div>
-    </section>
-
-    <!-- SLIDE 6: PLUS MINUS -->
-    <section id="slide5">
-        <div class="bg-overlay"></div>
-        <div class="content-card">
-            <h2>Evaluasi Metode</h2>
-            <div class="accent-bar"></div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
-                <div style="background: rgba(76, 175, 80, 0.1); padding: 25px; border-radius: 15px; border-left: 5px solid #4CAF50;">
-                    <h4 style="color: #81C784;"><i class="fa-solid fa-plus-circle"></i> Kelebihan</h4>
-                    <p style="margin-top: 10px; font-size: 0.9rem;">• Ukuran sampel rata-rata lebih kecil dibandingkan rencana satu tahap.<br>• Efisiensi biaya laboratorium dan pengurangan pemborosan produk.</p>
-                </div>
-                <div style="background: rgba(244, 67, 54, 0.1); padding: 25px; border-radius: 15px; border-left: 5px solid #F44336;">
-                    <h4 style="color: #E57373;"><i class="fa-solid fa-minus-circle"></i> Kekurangan</h4>
-                    <p style="margin-top: 10px; font-size: 0.9rem;">• Manajemen administrasi inspeksi yang lebih kompleks.<br>• Membutuhkan kesiapan pengujian berulang di fasilitas pengolah.</p>
-                </div>
+            <div class="mt-12 text-center text-sm text-gray-600">
+                &copy; 2026 Tugas Mata Kuliah Inovasi Pengembangan Produk Perikanan & Kelautan.
             </div>
         </div>
-    </section>
+    </footer>
 
-    <!-- SLIDE 7: APLIKASI PERIKANAN -->
-    <section id="slide6">
-        <img class="bg-image" src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=1600" alt="Ikan di Lab">
-        <div class="bg-overlay"></div>
-        <div class="content-card">
-            <h2>Implementasi Sektor Perikanan</h2>
-            <div class="accent-bar"></div>
-            <div class="icon-grid">
-                <div class="icon-item">
-                    <i class="fa-solid fa-eye"></i>
-                    <h4>Sensorik</h4>
-                    <p style="font-size: 0.75rem; margin-top: 5px;">Pengecekan karakteristik fisik objektif (mata, tekstur).</p>
-                </div>
-                <div class="icon-item">
-                    <i class="fa-solid fa-microscope"></i>
-                    <h4>Mikrobiologi</h4>
-                    <p style="font-size: 0.75rem; margin-top: 5px;">Deteksi patogen (Salmonella, Vibrio) sesuai standar ICMSF.</p>
-                </div>
-                <div class="icon-item">
-                    <i class="fa-solid fa-flask"></i>
-                    <h4>Kimiawi</h4>
-                    <p style="font-size: 0.75rem; margin-top: 5px;">Analisis Histamin dan cemaran logam berat.</p>
-                </div>
-            </div>
-            <p style="margin-top: 25px; font-style: italic; opacity: 0.8; text-align: center; font-size: 0.9rem;">"Metode ini sangat krusial untuk memastikan kepatuhan terhadap regulasi keamanan hasil laut global."</p>
-        </div>
-    </section>
+    <!-- JavaScript for Animations and Navbar -->
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-md');
+                nav.classList.replace('bg-white/90', 'bg-white/95');
+            } else {
+                nav.classList.remove('shadow-md');
+                nav.classList.replace('bg-white/95', 'bg-white/90');
+            }
+        });
 
-    <!-- SLIDE 8: REFERENSI -->
-    <section id="slide_bib">
-        <div class="bg-overlay"></div>
-        <div class="content-card">
-            <h2><i class="fa-solid fa-scroll" style="color: var(--gold-accent);"></i> Referensi Literatur</h2>
-            <div class="accent-bar"></div>
-            <div class="bib-list">
-                <div class="bib-entry">
-                    Institute of Medicine. (1991). <i>Seafood Safety</i>. Washington, DC: National Academy Press.
-                </div>
-                <div class="bib-entry">
-                    Santos-Fernández, E., Govindaraju, K., & Jones, G. (2014). A new variables acceptance sampling plan for food safety. <i>Food Control</i>, 44, 249-257.
-                </div>
-                <div class="bib-entry">
-                    Wang, M., Yang, F., Zhang, B., & Chen, Z. (2023). Sustainable Quality Management Based on Metrological Sampling Scheme Design: A Case Study of Food Processor. <i>Sustainability</i>, 15(6), 5283.
-                </div>
-                <div class="bib-entry" style="opacity: 0.8; font-style: italic;">
-                    Standard Guidelines: Codex Alimentarius Commission (CAC) & International Commission on Microbiological Specifications for Foods (ICMSF).
-                </div>
-            </div>
-        </div>
-    </section>
+        // Scroll Reveal Animation Intersection Observer
+        const revealElements = document.querySelectorAll('.reveal');
 
-    <!-- SLIDE 9: KESIMPULAN -->
-    <section id="slide9">
-        <div class="bg-overlay" style="background: radial-gradient(circle at center, var(--ocean-med) 0%, var(--ocean-dark) 100%);"></div>
-        <div class="content-card" style="text-align: center;">
-            <i class="fa-solid fa-anchor" style="font-size: 3rem; color: var(--gold-accent); margin-bottom: 20px;"></i>
-            <h2>Kesimpulan</h2>
-            <div class="accent-bar" style="margin: 15px auto;"></div>
-            <p style="font-size: 1.2rem; max-width: 850px; margin: 0 auto; line-height: 1.6;">Multiple Sampling Plan menyeimbangkan <b>efisiensi operasional</b> dengan <b>ketatnya standar keamanan pangan</b>. Melalui pengurangan ukuran sampel rata-rata tanpa mengurangi proteksi risiko, metode ini menjamin keberlanjutan mutu produk perikanan.</p>
-        </div>
-    </section>
+        const revealOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
 
-    <!-- SLIDE 10: PENUTUP -->
-    <section id="slide10">
-        <div class="bg-overlay"></div>
-        <div class="content-card" style="text-align: center; border: none; background: transparent;">
-            <h1 style="color: var(--gold-accent); font-size: 3rem;">Terima Kasih</h1>
-            <p style="font-size: 1.1rem; margin: 15px 0;">Sesi Tanya Jawab & Diskusi Dibuka</p>
-            <div class="accent-bar" style="margin: 0 auto;"></div>
-            <p style="opacity: 0.7; margin-top: 35px; font-size: 0.85rem;">Wassalamu’alaikum warahmatullahi wabarakatuh</p>
-        </div>
-    </section>
+        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, revealOptions);
 
-</div>
-
+        revealElements.forEach(el => {
+            revealOnScroll.observe(el);
+        });
+    </script>
 </body>
 </html>
